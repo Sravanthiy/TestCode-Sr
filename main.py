@@ -2,7 +2,7 @@ import re
 import datetime as dt
 
 
-def fieldSortAndTop(data, h, col=10):
+def fieldSortAndTop(data,col='Current Rent'):
     ##Requirement: produce a list sorted by Current Rent in ascending order .
     ##Obtain the first 5 items from the resultant list and  output to the console.
     
@@ -12,46 +12,46 @@ def fieldSortAndTop(data, h, col=10):
     #iterate over data to gather current rent values 
     for j in range(1, len(data), 1):
         try:
-            list1.append(float(data[j][h[col]]))
+            list1.append(float(data[j][col]))
         except:
-            print("Error converting Current Rent to float on line", j, "\n", data[j])
+            print("Error converting", col, "to float on line", j, "\n", data[j])
     list1 = sorted(set(list1))
     
     #collect top5 and print
     top5 = list1[0:5]
-    print('\n', '\033[1m' + "Top 5 " + '\033[4m', h[col].strip(), '\033[0m', "are", '\033[0m', top5)
+    print('\n', '\033[1m' + "Top 5 " + '\033[4m', col.strip(), '\033[0m', "are", '\033[0m', top5)
     
     return list1
 
 
-def filterOnLeaseYears(data, h, y=25, col=9):
+def filterOnLeaseYears(data, h, y=25, col='Lease Years',s='Current Rent'):
     ##Requirement From the list of all mast data create new list of mast data with Lease Years = 25 years.
     ## Output the list to the console, include all data fields.
     ## Output the total rent for all items in this list to the console
 
     # initialise variable
-    totalrent = 0
+    sum1 = 0
     # printing header
-    print('\n', '\033[1m', "Data where", '\033[4m', h[col],"=", y, '\033[0m', '\n')
+    print('\n', '\033[1m', "Data where", '\033[4m', col,"=", y, '\033[0m', '\n')
     print('\033[1m', ", ".join(h), '\033[0m')
 
     # iterate, filter, create new list and print data
     newmastdata = []
     for i in range(1, len(data), 1):
-        if int(data[i][h[col]]) == y:
+        if int(data[i][col]) == y:
             newmastdata.append(data[i])
             print(", ".join(list(data[i].values())))
             try:
-                totalrent += float(data[i][h[col]])
+                sum1 += float(data[i][s])
             except:
-                print("Error converting Current Rent to float on line", i, "\n", data[i])
+                print("Error converting", s, "to float on line", i, "\n", data[i])
 
-    print('\n', '\033[1m', "Total rent is", '\033[0m', totalrent)
+    print('\n', '\033[1m', "Total",s," is ", '\033[0m', sum1)
     
-    return newmastdata, totalrent
+    return newmastdata, sum1
 
 
-def groupByField(data, h, col=6):
+def groupByField(data,col='Tenant Name'):
     ##Requirement:
     ## Create a dictionary containing tenant name and a count of masts for each tenant.
     ## Output the dictionary to the console in a readable form.
@@ -59,17 +59,17 @@ def groupByField(data, h, col=6):
     # Create a unique tenants name list
     tenants = []
     for j in range(1, len(data), 1):
-        tenants.append(data[j][h[col]])
+        tenants.append(data[j][col])
     tenants = sorted(set(tenants))
 
-    print('\n', '\033[1m', "Data Grouped by", '\033[4m', h[col], '\033[0m')
+    print('\n', '\033[1m', "Data Grouped by", '\033[4m', col, '\033[0m')
 
     # Iterate over data to count the number of masts and create a dictionary
     dtnt = {}
     for i in range(0, len(tenants), 1):
         mastcount = 0
         for j in range(1, len(data), 1):
-            if data[j][h[col]] == tenants[i]:
+            if data[j][col] == tenants[i]:
                 mastcount += 1
         dtnt[tenants[i]] = mastcount
         # Output in readable format
@@ -78,13 +78,13 @@ def groupByField(data, h, col=6):
     return dtnt
 
 
-def filterOnLeaseSD(data, h, col=7, d1='01 Jun 1999', d2='31 Aug 2007'):
+def filterOnLeaseSD(data, h, col='Lease Start Date', d1='01 Jun 1999', d2='31 Aug 2007',fcol=['Lease End Date']):
     ## Requirement:
     ## List the data for rentals with Lease Start Date between 1 June 1999 and 31 Aug 2007.
     ## Output the data to the console with dates formatted as DD/MM/YYYY
 
     # printing header
-    print('\n', '\033[1m', "Data filtered on", '\033[4m', h[col], "between", d1, d2, '\033[0m', '\n')
+    print('\n', '\033[1m', "Data filtered on", '\033[4m', col, "between", d1, d2, '\033[0m', '\n')
     print('\033[1m', ", ".join(h), '\033[0m')
 
     # formatting input strings to dates
@@ -94,13 +94,14 @@ def filterOnLeaseSD(data, h, col=7, d1='01 Jun 1999', d2='31 Aug 2007'):
     # filtered in on dates and creating a new data list with filtered data
     newmastdata = []
     for i in range(1, len(data), 1):
-        lstartd = dt.datetime.strptime(data[i][h[col]], "%d %b %Y")
+        lstartd = dt.datetime.strptime(data[i][col], "%d %b %Y")
 
         if d1 <= lstartd <= d2:
-            lendd = dt.datetime.strptime(data[i][h[col + 1]], "%d %b %Y")
             # reformatting dates
-            data[i][h[col]] = lstartd.strftime('%d/%m/%Y')
-            data[i][h[col + 1]] = lendd.strftime('%d/%m/%Y')
+            data[i][col] = lstartd.strftime('%d/%m/%Y')
+            for f in fcol:
+                newdate=dt.datetime.strptime(data[i][f], "%d %b %Y")
+                data[i][f] = newdate.strftime('%d/%m/%Y')
             #printing the data output
             print(", ".join(list(data[i].values())))
             newmastdata.append(data[i])
@@ -109,9 +110,9 @@ def filterOnLeaseSD(data, h, col=7, d1='01 Jun 1999', d2='31 Aug 2007'):
 
 
 def all(data, h):
-    fieldSortAndTop(data, h)
+    fieldSortAndTop(data)
     filterOnLeaseYears(data, h)
-    groupByField(data, h)
+    groupByField(data)
     filterOnLeaseSD(data, h)
     
     return None
@@ -176,17 +177,18 @@ if __name__ == "__main__":
 
     header, data = processData(file1)
     file1.close()
+    print(header)
     while True:
         choice()
         var1 = input("Input choice:\t")
         if var1 in ['6', 6, 'none', 'exit', 'Exit']:
             break
         elif var1 in ["1", 1]:
-            fieldSortAndTop(data, header)
+            fieldSortAndTop(data)
         elif var1 in ["2", 2]:
             filterOnLeaseYears(data, header)
         elif var1 in ["3", 3]:
-            groupByField(data, header)
+            groupByField(data)
         elif var1 in ["4", 4]:
             filterOnLeaseSD(data, header),
         elif var1 in ["5", 5, "all"]:
