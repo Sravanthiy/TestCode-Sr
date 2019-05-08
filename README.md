@@ -20,11 +20,13 @@ Description:
        
        5. extraCommas takes input as a line and removes one extra comma within double quotes. This is used by processData function
        
-       6.fieldSortAndTop(data, header,col) produces a list of top 5 items in column col. Defaulted to column Tenant name.
+       6.fieldSortAndTop(data, col) produces a list of top 5 items in column col. Defaulted to column Tenant name.
        
-       7. groupByField(data, header, col) Create a dictionary containing tenant name and a count of masts for each tenant. col number is defaulted to tenant name.
+       7. groupByField(data,  col) Create a dictionary groupng by col and a count of masts for each value. col name is defaulted to tenant name.
        
-       8. filterOnLeaseSD(data,header,col,startdate,enddate): Lists the data for rentals with col values between start date and end date. Defaulted to Lease start date between 1 Jun 1999 and 31 Aug 2007.
+       8. filterOnLeaseSD(data,header,col,startdate,enddate,formatcolumns): Lists the data for rentals with col values between start date and end date. Defaulted to Lease start date between 1 Jun 1999 and 31 Aug 2007.
+       
+       9. filterOnLeaseYears(data, h, y, col,s): where 'col' value is 'y' and sums the amount in column 's'. Defaults y=25, col='Lease Years',s='Current Rent'
        
 
       
