@@ -1,7 +1,6 @@
 import pandas as pd
 import datetime as dt
 
-
 def fieldSortAndTop(data, field="Current Rent", top=5):
     # produce a list sorted by Current Rent in ascending order .
     ##Obtain the first 5 items from the resultant list and  output to the console.
@@ -13,8 +12,7 @@ def fieldSortAndTop(data, field="Current Rent", top=5):
     except:
         print("Encountered an exception. Please verify input")
 
-
-
+        
 def filterOnLeaseYears(data, i=25):
     # From the list of all mast data create new list of mast data with Lease Years = 25 years.
     # Output the list to the console, include all data fields.
@@ -24,24 +22,20 @@ def filterOnLeaseYears(data, i=25):
         newdata = data[data["Lease Years"] == i]
         if len(newdata) > 0:
             print('\n' + '\033[1m' + '\033[4m' + "Mast data where Lease years =", i, '\033[0m')
-
             print(newdata)
-            print()
-            print("Total Rent on all Masts where Lease Years are ", i, " is", newdata["Current Rent"].sum())
-            print()
+            print("\nTotal Rent on all Masts where Lease Years are ", i, " is", newdata["Current Rent"].sum(),"\n")
             return newdata
         else:
             print("No such records")
             return None
     except:
-        print("Please provide the right input")
-
-
+        print("Please input an integer")
+        
+        
 def groupByField(data, comment=""):
     ##Requirement:
     # Create a dictionary containing tenant name and a count of masts for each tenant.
     # Output the dictionary to the console in a readable form.
-    #
 
     # Grouping data
     newdata = data.groupby(["Tenant Name"])["Property Name"].count().rename("count").reset_index()
@@ -63,7 +57,6 @@ def groupByFieldCaseInsenstve(data):
     groupByField(data, "(Case Insensitive)")
 
 
-
 def filterOnLeaseSD(data):
     # Requirement:
     # List the data for rentals with Lease Start Date between 1 June 1999 and 31 Aug 2007.
@@ -71,14 +64,18 @@ def filterOnLeaseSD(data):
     ##
 
     # Converting Date strings to date formats
+    pd.options.mode.chained_assignment = None
     data["LeaseSD"] = list(map(lambda x: dt.datetime.strptime(x, "%d %b %Y"), data["Lease Start Date"]))
     data["LeaseED"] = list(map(lambda x: dt.datetime.strptime(x, "%d %b %Y"), data["Lease End Date"]))
     # Filtering data as per requirement
     newdata = data[(data["LeaseSD"] >= '1 June 1999') & (data["LeaseSD"] <= '31 Aug 2007')]
+    data.drop(["LeaseSD", "LeaseED"], inplace=True, axis=1)
+
     # formatting output
     newdata["Lease Start Date"] = newdata["LeaseSD"].dt.strftime('%d/%m/%Y')
     newdata["Lease End Date"] = newdata["LeaseED"].dt.strftime('%d/%m/%Y')
     newdata.drop(["LeaseSD", "LeaseED"], inplace=True, axis=1)
+    
     # displaying output
     print('\n' + '\033[1m' + '\033[4m' + "Data filtered on Lease Start Date" + '\033[0m')
     print(newdata)
@@ -92,15 +89,9 @@ def all(data):
     groupByField(data)
     filterOnLeaseSD(data)
 
-
-if __name__ == "__main__":
-    # Reading the csv file
-    inputdata = pd.read_csv("Mobile Phone Masts.csv")
-
-
-    def choice():
+def choice():
         # Choice text
-        print("\n\nChoose the operation you would like to perform")
+        print( '\033[1m' + "\n\nChoose the operation you would like to perform" + '\033[0m')
         print("1:Produce a list sorted by Current Rent in ascending order and Obtain the first 5 items from the "
               "resultant list.") 
         print("2: From the list of all mast data create new list of mast data with Lease Years = 25 years and include "
@@ -110,8 +101,13 @@ if __name__ == "__main__":
               "dates formatted as DD/MM/YYYY.") 
         print("5. Do all of these.")
         print("6. Exit")
-
-
+        
+        
+if __name__ == "__main__":
+    # Reading the csv file
+    inputdata = pd.read_csv("Mobile Phone Masts.csv")
+    
+    #Input choice and execute relevant function
     while True:
         choice()
         inputvar = input("Input choice:\t")
@@ -129,4 +125,4 @@ if __name__ == "__main__":
         elif inputvar in ["5", 5, "all"]:
             all(inputdata)
         else:
-            print("Incorrect Choice")
+            print('\033[1m' + "Incorrect Choice"+'\033[0m')
