@@ -14,8 +14,6 @@ def fieldSortAndTop(data, field="Current Rent", top=5):
         print("Encountered an exception. Please verify input")
 
 
-# fieldSortAndTop(data,"Current Rent",5)
-
 
 def filterOnLeaseYears(data, i=25):
     # From the list of all mast data create new list of mast data with Lease Years = 25 years.
@@ -36,7 +34,7 @@ def filterOnLeaseYears(data, i=25):
             print("No such records")
             return None
     except:
-        print("Please input an integer")
+        print("Please provide the right input")
 
 
 def groupByField(data, comment=""):
