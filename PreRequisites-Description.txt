@@ -3,11 +3,11 @@ PreRequisites:
 
 Description:
 Code has the following functions:
-  1. fieldSortAndTop(data, field="Current Rent", top=5): produce a list sorted by Current Rent in ascending order .
-  2. filterOnLeaseYears(data, i=25): Creates a new list of mast data with Lease Years = 25 years.
-  3. groupByField(data, comment=""): Create a dictionary containing tenant name and a count of masts for each tenant.
-  4. groupByFieldCaseInsenstve(data): same as above but case insensitive
-  5. filterOnLeaseSD(data): Lists the data for rentals with Lease Start Date between 1 June 1999 and 31 Aug 2007.
-  6. all(data):	calls the functions fieldSortAndTop(data),filterOnLeaseYears(data),groupByField(data) and filterOnLeaseSD(data)
-  7. choice(): prints the choice text
+  1.Choice to print the choice text
+  2. processData(file) returns a header list and data in dictionary format.
+  3. extraCommas takes input as a line and removes one extra comma within double quotes
+  4.fieldSortAndTop(data, header,col) produces a list of top 5 items in column col. Defaulted to column Tenant name
+  5. groupByField(data, header, col) Create a dictionary containing tenant name and a count of masts for each tenant. col number is defaulted to tenant name
+  6. filterOnLeaseSD(data,header,col,startdate,enddate): Lists the data for rentals with col values between start date and end date. Defaulted to Lease start date between 1 Jun 1999 and 31 Aug 2007.
+  7. all(data, header):	calls the functions fieldSortAndTop,filterOnLeaseYears, groupByField,filterOnLeaseSD(data)
   8. Main:Takes the choice which includes performing all the functions or none and exit.
