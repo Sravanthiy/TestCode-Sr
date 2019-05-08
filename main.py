@@ -32,7 +32,7 @@ def filterOnLeaseYears(data, h, y=25, col=9):
     # initialise variable
     totalrent = 0
     # printing header
-    print('\n', '\033[1m', "Data where", '\033[4m', h[col], '\033[0m', "=", y, '\033[0m', '\n')
+    print('\n', '\033[1m', "Data where", '\033[4m', h[col],"=", y, '\033[0m', '\n')
     print('\033[1m', ", ".join(h), '\033[0m')
 
     # iterate, filter, create new list and print data
@@ -62,7 +62,7 @@ def groupByField(data, h, col=6):
         tenants.append(data[j][h[col]])
     tenants = sorted(set(tenants))
 
-    print('\n', '\033[1m', '\033[4m', "Data Grouped by", h[col], '\033[0m')
+    print('\n', '\033[1m', "Data Grouped by", '\033[4m', h[col], '\033[0m')
 
     # Iterate over data to count the number of masts and create a dictionary
     dtnt = {}
@@ -175,6 +175,7 @@ if __name__ == "__main__":
     file1 = open("Mobile Phone Masts.csv", "r")
 
     header, data = processData(file1)
+    file1.close()
     while True:
         choice()
         var1 = input("Input choice:\t")
